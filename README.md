@@ -2,7 +2,7 @@
 
 Private, end-to-end encrypted messages between ZAO Respect holders, on XMTP.
 
-This folder is a self-contained app. It does not import from ZAOOS and does not call ZAOOS. It lives in `apps/zao-xmtp/` only until it gets its own repo (the plan is in ZAOOS research doc 2684). To move it, copy this folder; nothing outside it is needed.
+A standalone app. It does not import from or call ZAOOS. It was built in ZAOOS at `apps/zao-xmtp/` (#4000, #4002) and graduated to this repo on 2026-10-18 with that history; the plan and the decisions behind it stay in ZAOOS research doc 2684.
 
 ## Who can get in
 
@@ -42,7 +42,9 @@ npm run build
 
 Database: apply `supabase/migrations/0001_members_seen.sql` then `0002_nonces_and_unique_address.sql` to the app's own Supabase project. Neither is applied anywhere yet. Sign-in needs the `auth_nonces` table, so without Supabase the nonce route answers 503.
 
-Inside the ZAOOS repo, `next.config.ts` sets `turbopack.root` and `outputFileTracingRoot` to this folder. Without them Next treats the ZAOOS root as the workspace and fails on ZAOOS's own `instrumentation.ts` (`Can't resolve '@sentry/nextjs'`).
+`next.config.ts` pins `turbopack.root` and `outputFileTracingRoot` to this folder. They were needed while the app lived inside ZAOOS (Next otherwise took the ZAOOS root as the workspace and failed on its `instrumentation.ts`); here they only stop Next from picking up a lockfile in a parent folder.
+
+CI (`.github/workflows/ci.yml`) runs `npm ci`, typecheck, tests and build on every pull request and on `main`.
 
 ## What is ported from ZAOOS and what is new
 
