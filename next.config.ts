@@ -1,8 +1,8 @@
 import type { NextConfig } from 'next';
 
-// This app lives inside the ZAOOS repo until it gets its own. Without these two,
-// Next takes the repo root (it has its own lockfile) as the workspace root and
-// pulls in ZAOOS's root instrumentation.ts, which fails on @sentry/nextjs.
+// Pin the workspace root to this folder. Needed while the app lived inside
+// ZAOOS (Next took the ZAOOS root and its instrumentation.ts); kept so a
+// lockfile in a parent folder can never change the root.
 const appRoot = __dirname;
 
 const nextConfig: NextConfig = {
